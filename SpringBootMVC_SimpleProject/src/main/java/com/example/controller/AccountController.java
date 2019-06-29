@@ -22,7 +22,6 @@ public class AccountController {
 	AccountService accService;
 	
 	@RequestMapping("/list")
-	//@ResponseBody
 	public String list(Model map) {
 		List<Account> accountsList = accService.findAll();
 		long count = accService.count();
