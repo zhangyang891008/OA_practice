@@ -1,0 +1,35 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+### STS ###
+*/.apt_generated
+*/.classpath
+*/.factorypath
+*/.project
+*/.settings
+*/.springBeans
+*/.sts4-cache
+*/target/*
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+*.zip
+
+### NetBeans ###
+bootstrap-4.3.1/
+.metadata/
+course201901-master/
+demo-2/
+mybatis-generator-gui-master/
+springboot_demo01/
+SpringDemo/
+
+
+### VS Code ###
+.vscode/
