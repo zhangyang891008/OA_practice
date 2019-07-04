@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.mapper.AccountRoleMapper">
-  <resultMap id="BaseResultMap" type="com.example.entity.AccountRole">
+<mapper namespace="com.example.mapper.RolePermissionMapper">
+  <resultMap id="BaseResultMap" type="com.example.entity.RolePermission">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="account_id" jdbcType="INTEGER" property="accountId" />
     <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="permission_id" jdbcType="INTEGER" property="permissionId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,15 +65,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, account_id, role_id
+    id, role_id, permission_id
   </sql>
-  <select id="selectByExample" parameterType="com.example.mapper.AccountRoleExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.example.mapper.RolePermissionExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from account_role
+    from role_permission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,59 +92,59 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from account_role
+    from role_permission
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from account_role
+    delete from role_permission
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.example.mapper.AccountRoleExample">
-    delete from account_role
+  <delete id="deleteByExample" parameterType="com.example.mapper.RolePermissionExample">
+    delete from role_permission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.entity.AccountRole" useGeneratedKeys="true">
-    insert into account_role (account_id, role_id)
-    values (#{accountId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.entity.RolePermission" useGeneratedKeys="true">
+    insert into role_permission (role_id, permission_id)
+    values (#{roleId,jdbcType=INTEGER}, #{permissionId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.entity.AccountRole" useGeneratedKeys="true">
-    insert into account_role
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.entity.RolePermission" useGeneratedKeys="true">
+    insert into role_permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="accountId != null">
-        account_id,
-      </if>
       <if test="roleId != null">
         role_id,
       </if>
+      <if test="permissionId != null">
+        permission_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="accountId != null">
-        #{accountId,jdbcType=INTEGER},
-      </if>
       <if test="roleId != null">
         #{roleId,jdbcType=INTEGER},
       </if>
+      <if test="permissionId != null">
+        #{permissionId,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.example.mapper.AccountRoleExample" resultType="java.lang.Long">
-    select count(*) from account_role
+  <select id="countByExample" parameterType="com.example.mapper.RolePermissionExample" resultType="java.lang.Long">
+    select count(*) from role_permission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update account_role
+    update role_permission
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.accountId != null">
-        account_id = #{record.accountId,jdbcType=INTEGER},
-      </if>
       <if test="record.roleId != null">
         role_id = #{record.roleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.permissionId != null">
+        permission_id = #{record.permissionId,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -152,38 +152,30 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update account_role
+    update role_permission
     set id = #{record.id,jdbcType=INTEGER},
-      account_id = #{record.accountId,jdbcType=INTEGER},
-      role_id = #{record.roleId,jdbcType=INTEGER}
+      role_id = #{record.roleId,jdbcType=INTEGER},
+      permission_id = #{record.permissionId,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.entity.AccountRole">
-    update account_role
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.entity.RolePermission">
+    update role_permission
     <set>
-      <if test="accountId != null">
-        account_id = #{accountId,jdbcType=INTEGER},
-      </if>
       <if test="roleId != null">
         role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionId != null">
+        permission_id = #{permissionId,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.entity.AccountRole">
-    update account_role
-    set account_id = #{accountId,jdbcType=INTEGER},
-      role_id = #{roleId,jdbcType=INTEGER}
+  <update id="updateByPrimaryKey" parameterType="com.example.entity.RolePermission">
+    update role_permission
+    set role_id = #{roleId,jdbcType=INTEGER},
+      permission_id = #{permissionId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
-  </update>
-  
-  <!-- zy add -->
-  <resultMap id="RoleIdsResultMap" type="java.lang.Integer">
-  </resultMap>
-  <select id="seletctRoleIdByAccountId" parameterType="java.lang.Integer" resultMap="RoleIdsResultMap">
-  	select role_id from account_role
-  	where account_id = #{accountId,jdbcType=INTEGER}
-  </select>
+  </update>  
 </mapper>

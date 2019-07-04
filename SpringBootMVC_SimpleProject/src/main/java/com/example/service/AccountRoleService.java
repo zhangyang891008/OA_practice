@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +29,13 @@ public class AccountRoleService {
 		example.createCriteria().andAccountIdEqualTo(id);
 		List<AccountRole> aRoles = accountRoleMapper.selectByExample(example);
 		if(aRoles==null || aRoles.size()==0) {
-			return null;
+			return new ArrayList<Role>();
 		}
-		
+		  
 		//2.根据roleId去表中获取对应的Role对象
 		List<Integer> roleIds =  accountRoleMapper.seletctRoleIdByAccountId(id);
 		RoleExample roleExample = new RoleExample();
-		roleExample.createCriteria().andIdIn(roleIds);
+		roleExample.createCriteria().andIdIn(roleIds);    
 		List<Role> roles = roleMapper.selectByExample(roleExample);
 		return roles;
 		

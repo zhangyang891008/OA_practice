@@ -112,6 +112,7 @@ public class AccountController {
 		Account account = (Account) request.getSession().getAttribute("account");
 		Integer accountId = account.getId();
 		List<Role> roles = arService.getRolesByAccountId(accountId);
+		request.getSession().setAttribute("role", roles);
 		return roles;
 	}
 	
