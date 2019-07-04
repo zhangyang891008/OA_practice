@@ -9,6 +9,8 @@ import com.example.RespStat;
 import com.example.entity.Account;
 import com.example.mapper.AccountExample;
 import com.example.mapper.AccountMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @Service
 public class AccountService {
@@ -21,6 +23,14 @@ public class AccountService {
 		example.createCriteria().andIdIsNotNull();
 		return accountMapper.selectByExample(example );
 		
+	}
+	
+	public PageInfo<Account> findByPage(int pageNum, int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		
+		AccountExample example = new AccountExample(); 
+		List<Account> list = accountMapper.selectByExample(example);
+		return new PageInfo<>(list, 5);
 	}
 	
 	
@@ -58,5 +68,13 @@ public class AccountService {
 		}else {
 			return RespStat.buildRespStat(400, "delete error");
 		}
+	}
+
+	public Account findByLoginNameAndPassword(String loginName, String password) {
+		
+		AccountExample example = new AccountExample();
+		example.createCriteria().andLoginNameEqualTo(loginName).andPasswordEqualTo(password);
+		Account account = accountMapper.selectByExample(example).get(0);
+		return account;
 	}
 }

@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value="accountMapper")
 public interface AccountMapper extends MyBatisBaseDao<Account, Integer, AccountExample> {
+	
 }
