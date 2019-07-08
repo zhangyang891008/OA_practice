@@ -33,6 +33,13 @@ public class AccountService {
 		return new PageInfo<>(list, 5);
 	}
 	
+	//查询包含权限和角色信息的账号信息
+	public PageInfo<Account> findByPageDetails(int pageNum, int pageSize){
+		PageHelper.startPage(pageNum, pageSize);
+		List<Account> list = accountMapper.getRolesAndPermissions();
+		return new PageInfo<>(list,5);
+	}
+	
 	
 	public long count() {
 		AccountExample example = new AccountExample();
@@ -77,4 +84,10 @@ public class AccountService {
 		Account account = accountMapper.selectByExample(example).get(0);
 		return account;
 	}
+
+	public void saveImage(Account account) {
+		accountMapper.updateByPrimaryKeySelective(account);
+	}
+	
+
 }

@@ -1,5 +1,10 @@
 package com.example.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,14 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.RespStat;
 import com.example.entity.Account;
 import com.example.entity.Role;
-import com.example.service.AccountRoleService;
 import com.example.service.AccountService;
 import com.github.pagehelper.PageInfo;
 
@@ -24,9 +30,7 @@ public class AccountController {
 	
 	@Autowired
 	AccountService accService;
-	@Autowired
-	AccountRoleService arService;
-	
+ 
 	@RequestMapping("/listold")
 	public String list(Model map) {
 		List<Account> accountsList = accService.findAll();
@@ -106,15 +110,33 @@ public class AccountController {
 		}
 	}
 	
-	@RequestMapping("/getRoles")
-	@ResponseBody
-	public List<Role> getRoles(HttpServletRequest request) {
-		Account account = (Account) request.getSession().getAttribute("account");
-		Integer accountId = account.getId();
-		List<Role> roles = arService.getRolesByAccountId(accountId);
-		request.getSession().setAttribute("role", roles);
-		return roles;
+	//个人信息跳转
+	@RequestMapping("/profile")
+	public String profile() {
+		
+		return "account/profile";
 	}
 	
+	@RequestMapping("/fileUpload")
+	public String fileUpload(MultipartFile filename,String password, HttpServletRequest request) {
+		System.out.println(filename);
+		System.out.println(filename.getOriginalFilename());
+			
+		try {
+			File path = new File(ResourceUtils.getURL("classpath:").getPath());
+	        File upload = new File(path.getAbsolutePath()+File.separator+ "static/uploads");
+	        
+	        System.out.println("upload:" + upload);
+	        
+	        filename.transferTo(new File(upload+File.separator+filename.getOriginalFilename()));
+	        Account account = (Account) request.getSession().getAttribute("account");
+	        account.setImage(filename.getOriginalFilename());
+	        accService.saveImage(account);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "account/profile";
+	}
 	
 }

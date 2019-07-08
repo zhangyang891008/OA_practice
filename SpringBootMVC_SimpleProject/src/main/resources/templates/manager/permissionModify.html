@@ -12,12 +12,9 @@
 <script th:src="@{/js/bootstrap.min.js}" ></script>
 </head>
 <body>
-
 <!--  导航栏                      开始  			 ↓ -->
 
 <nav class="navbar navbar-default">
-
-
 
   <div class="container-fluid">
     <div class="navbar-header">
@@ -42,24 +39,18 @@
         
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-          人员管理 <span class="caret"></span>
+          人力资源 <span class="caret"></span>
           </a>
         
           <ul class="dropdown-menu">
-            <li><a href="/account/list">用户列表</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
+            <li><a href="/account/list">员工列表</a></li>
           </ul>
-          
           
         </li>
       </ul>
       
-     <ul class="nav navbar-nav">
+      
+      <ul class="nav navbar-nav">
         
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -97,8 +88,7 @@
       <ul th:if="${session.account} !=null" class="nav navbar-nav navbar-right">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-          [[${session.account.image}]]  
-   <img th:src="@{'uploads/'+${session.account.image}}"  width='30' height='30'/>
+          
           欢迎你 : [[${session.account.loginName}]] <span class="caret"></span> </a>
           <ul class="dropdown-menu">
             <li><a href="/account/profile">个人信息</a></li>
@@ -120,15 +110,71 @@
 
 
 <!--  导航栏                      结束  			↑       -->
+<h1>修改/添加 权限</h1>
 
-<!--  巨幕       开始   ↓ -->
-<div class="jumbotron">
-  <h3>欢迎使用无纸化办公系统</h3>
-  <p>.version 1.0 </p>
-  <p></p>
-</div>
-<!--  巨幕       结束   ↑ -->
+<form id="p">
+权限名称： <input name="name" type="text" th:value="${p}==null?'':${p.name}">  <br>
+URI： <input name="url" type="text" th:value="${p}==null?'':${p.url}"><br>
 
+权限：  
+<input type="checkbox" id="c" th:checked="${p.c}==1?'true':'false'"> c
+<input type="checkbox" id="r" th:checked="${p.r}==1?'true':'false'"> r
+<input type="checkbox" id="u" th:checked="${p.u}==1?'true':'false'"> u
+<input type="checkbox" id="d" th:checked="${p.d}==1?'true':'false'"/> d
+
+<input type="text" name="id" th:value="${p}==null?'':${p.id}">
+<br>
+<a class="btn btn-danger" href="javascript:smt();">提交</a>
+</form>
+
+
+<br>
+
+
+<script type="text/javascript">
+function smt(){
+	var formObject = {};
+	
+	var data = $("#p").serializeArray();
+	$.each(data,function(i,item){
+		
+		formObject[item.name] = item.value
+	});
+	
+	
+	formObject['c'] = $("#c").is(':checked')?1:0;
+	formObject['r'] = $("#r").is(':checked')?1:0;
+	formObject['u'] = $("#u").is(':checked')?1:0;
+	formObject['d'] = $("#d").is(':checked')?1:0;
+	
+	
+	// 提交json对象 到controller
+	console.log("data" + data);
+	console.log("formObject" + formObject);
+	console.log("formObject" + JSON.stringify(formObject));
+	
+	var url = "/api/v1/manager/permission/update";
+	
+	$.ajax({
+		
+		type : "post",
+		url : url,
+		contentType : "application/json" ,
+		data : JSON.stringify(formObject),
+		dataType : "json",
+		
+		success : function (msg){
+			console.log("success:" +JSON.stringify(msg) )
+		},
+		error : function (msg){
+			console.log("error:" + msg)
+		}
+	})
+	
+}
+
+
+</script>
 
 
 </body>

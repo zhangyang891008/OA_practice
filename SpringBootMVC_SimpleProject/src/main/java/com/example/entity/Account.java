@@ -1,6 +1,7 @@
 package com.example.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * account
@@ -24,6 +25,10 @@ public class Account implements Serializable {
     private String image;
 
     private String authority;
+    
+    private List<Role> roles;
+    
+    private List<Permission> permissions;
 
     private static final long serialVersionUID = 1L;
 
@@ -99,7 +104,23 @@ public class Account implements Serializable {
         this.authority = authority;
     }
 
-    @Override
+    public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	public List<Permission> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(List<Permission> permissions) {
+		this.permissions = permissions;
+	}
+
+	@Override
     public boolean equals(Object that) {
         if (this == that) {
             return true;
